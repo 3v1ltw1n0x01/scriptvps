@@ -6,7 +6,7 @@ export BLUE='\e[0;34m'
 export NC='\e[0m'
 
 
-GitUser="EvoTeamMalaysia"
+GitUser="3v1ltw1n0x01"
 
 # // MY IPVPS
 export MYIP=$(curl -sS ipv4.icanhazip.com)

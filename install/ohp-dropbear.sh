@@ -1,31 +1,31 @@
 #!/bin/bash
-GitUser="EvoTeamMalaysia"
+GitUser="3v1ltw1n0x01"
 #Direct Proxy Squid For OpenVPN TCP
 RED='\e[1;31m'
 GREEN='\e[0;32m'
 BLUE='\e[0;34m'
 NC='\e[0m'
-MYIP=$(wget -qO- https://icanhazip.com);
-MYIP2="s/xxxxxxxxx/$MYIP/g";
+MYIP=$(wget -qO- https://icanhazip.com)
+MYIP2="s/xxxxxxxxx/$MYIP/g"
 domain=$(cat /etc/v2ray/domain)
 #Update Repository VPS
 clear
-apt update 
+apt update
 apt-get -y upgrade
 
 #Port Server ovpn ohp
 #Jika Ingiin Mengubah Port Silahkan Sesuaikan Dengan Port Yang Ada Di VPS Mu
-Port_OpenVPN_TCP='1194';
-Port_Squid='3128';
-Port_OHP='8787';
+Port_OpenVPN_TCP='1194'
+Port_Squid='3128'
+Port_OHP='8787'
 
 #Installing ohp Server
-cd 
+cd
 wget -O /usr/local/bin/ohp "https://raw.githubusercontent.com/${GitUser}/scriptvps/main/ohp"
 chmod +x /usr/local/bin/ohp
 
 #Buat File OpenVPN TCP OHP
-cat > /etc/openvpn/client-tcp-ohp1194.ovpn <<END
+cat >/etc/openvpn/client-tcp-ohp1194.ovpn <<END
 client
 dev tun
 proto tcp
@@ -51,21 +51,21 @@ http-proxy-option CUSTOM-HEADER X-Forward-Host bug.com
 http-proxy-option CUSTOM-HEADER Connection: keep-alive
 END
 
-sed -i $MYIP2 /etc/openvpn/client-tcp-ohp1194.ovpn;
+sed -i $MYIP2 /etc/openvpn/client-tcp-ohp1194.ovpn
 
 # masukkan certificatenya ke dalam config client TCP 1194
-echo '<ca>' >> /etc/openvpn/client-tcp-ohp1194.ovpn
-cat /etc/openvpn/server/ca.crt >> /etc/openvpn/client-tcp-ohp1194.ovpn
-echo '</ca>' >> /etc/openvpn/client-tcp-ohp1194.ovpn
+echo '<ca>' >>/etc/openvpn/client-tcp-ohp1194.ovpn
+cat /etc/openvpn/server/ca.crt >>/etc/openvpn/client-tcp-ohp1194.ovpn
+echo '</ca>' >>/etc/openvpn/client-tcp-ohp1194.ovpn
 cp /etc/openvpn/client-tcp-ohp1194.ovpn /home/vps/public_html/client-tcp-ohp1194.ovpn
 clear
-cd 
+cd
 
 #Buat Service Untuk OHP Ovpn
-cat > /etc/systemd/system/ohp.service <<END
+cat >/etc/systemd/system/ohp.service <<END
 [Unit]
 Description=Direct Squid Proxy For OpenVPN TCP
-Documentation=https://t.me/artharon
+Documentation=https://t.me/ironsnout
 Wants=network.target
 After=network.target
 

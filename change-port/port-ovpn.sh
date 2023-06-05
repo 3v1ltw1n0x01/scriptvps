@@ -1,38 +1,38 @@
 #!/bin/bash
-GitUser="EvoTeamMalaysia"
+GitUser="3v1ltw1n0x01"
 #IZIN SCRIPT
 MYIP=$(curl -sS ipv4.icanhazip.com)
 echo -e "\e[32mloading...\e[0m"
 clear
 # Valid Script
-VALIDITY () {
-    today=`date -d "0 days" +"%Y-%m-%d"`
+VALIDITY() {
+    today=$(date -d "0 days" +"%Y-%m-%d")
     Exp1=$(curl https://raw.githubusercontent.com/${GitUser}/multi-access/main/access | grep $MYIP | awk '{print $4}')
     if [[ $today < $Exp1 ]]; then
-    echo -e "\e[32mYOUR SCRIPT ACTIVE..\e[0m"
+        echo -e "\e[32mYOUR SCRIPT ACTIVE..\e[0m"
     else
-    echo -e "\e[31mYOUR SCRIPT HAS EXPIRED!\e[0m";
-    echo -e "\e[31mPlease renew your ipvps first\e[0m"
-    exit 0
-fi
+        echo -e "\e[31mYOUR SCRIPT HAS EXPIRED!\e[0m"
+        echo -e "\e[31mPlease renew your ipvps first\e[0m"
+        exit 0
+    fi
 }
 IZIN=$(curl https://raw.githubusercontent.com/${GitUser}/multi-access/main/access | awk '{print $5}' | grep $MYIP)
 if [ $MYIP = $IZIN ]; then
-echo -e "\e[32mPermission Accepted...\e[0m"
-VALIDITY
+    echo -e "\e[32mPermission Accepted...\e[0m"
+    VALIDITY
 else
-echo -e "\e[31mPermission Denied!\e[0m";
-echo -e "\e[31mPlease buy script first\e[0m"
-exit 0
+    echo -e "\e[31mPermission Denied!\e[0m"
+    echo -e "\e[31mPlease buy script first\e[0m"
+    exit 0
 fi
 echo -e "\e[32mloading...\e[0m"
 clear
-MYIP=$(wget -qO- icanhazip.com);
+MYIP=$(wget -qO- icanhazip.com)
 domain=$(cat /usr/local/etc/xray/domain)
 ovpn="$(netstat -nlpt | grep -i openvpn | grep -i 0.0.0.0 | awk '{print $4}' | cut -d: -f2)"
 ovpn2="$(netstat -nlpu | grep -i openvpn | grep -i 0.0.0.0 | awk '{print $4}' | cut -d: -f2)"
-ovpn3="$(cat ~/log-install.txt | grep -w "OHP OpenVPN" | cut -d: -f2|sed 's/ //g')"
-ovpn4="$(cat ~/log-install.txt | grep -w "OpenVPN SSL" | cut -d: -f2|sed 's/ //g')"
+ovpn3="$(cat ~/log-install.txt | grep -w "OHP OpenVPN" | cut -d: -f2 | sed 's/ //g')"
+ovpn4="$(cat ~/log-install.txt | grep -w "OpenVPN SSL" | cut -d: -f2 | sed 's/ //g')"
 echo -e "\e[1;36m.-----------------------------------------.\e[0m"
 echo -e "\e[1;36m|            \e[1;33mCHANGE PORT OPENVPN\e[m          \e[1;36m|\e[0m"
 echo -e "\e[1;36m'-----------------------------------------'\e[0m"
@@ -49,17 +49,17 @@ read -p "     Select From Options [1-4 or x & y] :  " prot
 echo -e ""
 case $prot in
 1)
-read -p "New Port OpenVPN: " vpn
-if [ -z $vpn ]; then
-echo "Please Input Port"
-exit 0
-fi
-cek=$(netstat -nutlp | grep -w $vpn)
-if [[ -z $cek ]]; then
-rm -f /etc/openvpn/server/server-tcp-$ovpn.conf
-rm -f /etc/openvpn/client-tcp-$ovpn.ovpn
-rm -f /home/vps/public_html/client-tcp-$ovpn.ovpn
-cat > /etc/openvpn/server/server-tcp-$vpn.conf<<END
+    read -p "New Port OpenVPN: " vpn
+    if [ -z $vpn ]; then
+        echo "Please Input Port"
+        exit 0
+    fi
+    cek=$(netstat -nutlp | grep -w $vpn)
+    if [[ -z $cek ]]; then
+        rm -f /etc/openvpn/server/server-tcp-$ovpn.conf
+        rm -f /etc/openvpn/client-tcp-$ovpn.ovpn
+        rm -f /home/vps/public_html/client-tcp-$ovpn.ovpn
+        cat >/etc/openvpn/server/server-tcp-$vpn.conf <<END
 port $vpn
 proto tcp
 dev tun
@@ -85,7 +85,7 @@ persist-tun
 status openvpn-tcp.log
 verb 3
 END
-cat > /etc/openvpn/client-tcp-$vpn.ovpn <<-END
+        cat >/etc/openvpn/client-tcp-$vpn.ovpn <<-END
 setenv FRIENDLY_NAME "OVPN TCP"
 client
 dev tun
@@ -104,31 +104,31 @@ auth-user-pass
 comp-lzo
 verb 3
 END
-echo '<ca>' >> /etc/openvpn/client-tcp-$vpn.ovpn
-cat /etc/openvpn/server/ca.crt >> /etc/openvpn/client-tcp-$vpn.ovpn
-echo '</ca>' >> /etc/openvpn/client-tcp-$vpn.ovpn
-cp /etc/openvpn/client-tcp-$vpn.ovpn /home/vps/public_html/client-tcp-$vpn.ovpn
-systemctl disable --now openvpn-server@server-tcp-$ovpn > /dev/null
-systemctl enable --now openvpn-server@server-tcp-$vpn > /dev/null
-sed -i "s/   - OpenVPN                 : TCP $ovpn, UDP $ovpn2/   - OpenVPN                 : TCP $vpn, UDP $ovpn2/g" /root/log-install.txt
-sed -i "s/$ovpn/$vpn/g" /etc/stunnel/stunnel.conf
-echo -e "\e[032;1mPort $vpn modified successfully\e[0m"
-else
-echo -e "\e[1;31mPort $vpn is used\e[0m"
-fi
-;;
+        echo '<ca>' >>/etc/openvpn/client-tcp-$vpn.ovpn
+        cat /etc/openvpn/server/ca.crt >>/etc/openvpn/client-tcp-$vpn.ovpn
+        echo '</ca>' >>/etc/openvpn/client-tcp-$vpn.ovpn
+        cp /etc/openvpn/client-tcp-$vpn.ovpn /home/vps/public_html/client-tcp-$vpn.ovpn
+        systemctl disable --now openvpn-server@server-tcp-$ovpn >/dev/null
+        systemctl enable --now openvpn-server@server-tcp-$vpn >/dev/null
+        sed -i "s/   - OpenVPN                 : TCP $ovpn, UDP $ovpn2/   - OpenVPN                 : TCP $vpn, UDP $ovpn2/g" /root/log-install.txt
+        sed -i "s/$ovpn/$vpn/g" /etc/stunnel/stunnel.conf
+        echo -e "\e[032;1mPort $vpn modified successfully\e[0m"
+    else
+        echo -e "\e[1;31mPort $vpn is used\e[0m"
+    fi
+    ;;
 2)
-read -p "New Port OpenVPN: " vpn
-if [ -z $vpn ]; then
-echo "Please Input Port"
-exit 0
-fi
-cek=$(netstat -nutlp | grep -w $vpn)
-if [[ -z $cek ]]; then
-rm -f /etc/openvpn/server/server-udp-$ovpn2.conf
-rm -f /etc/openvpn/client-udp-$ovpn2.ovpn
-rm -f /home/vps/public_html/client-tcp-$ovpn2.ovpn
-cat > /etc/openvpn/server/server-udp-$vpn.conf<<END
+    read -p "New Port OpenVPN: " vpn
+    if [ -z $vpn ]; then
+        echo "Please Input Port"
+        exit 0
+    fi
+    cek=$(netstat -nutlp | grep -w $vpn)
+    if [[ -z $cek ]]; then
+        rm -f /etc/openvpn/server/server-udp-$ovpn2.conf
+        rm -f /etc/openvpn/client-udp-$ovpn2.ovpn
+        rm -f /home/vps/public_html/client-tcp-$ovpn2.ovpn
+        cat >/etc/openvpn/server/server-udp-$vpn.conf <<END
 port $vpn
 proto udp
 dev tun
@@ -155,7 +155,7 @@ status openvpn-udp.log
 verb 3
 explicit-exit-notify
 END
-cat > /etc/openvpn/client-udp-$vpn.ovpn <<-END
+        cat >/etc/openvpn/client-udp-$vpn.ovpn <<-END
 setenv FRIENDLY_NAME "OVPN UDP"
 client
 dev tun
@@ -173,29 +173,29 @@ auth-user-pass
 comp-lzo
 verb 3
 END
-echo '<ca>' >> /etc/openvpn/client-udp-$vpn.ovpn
-cat /etc/openvpn/server/ca.crt >> /etc/openvpn/client-udp-$vpn.ovpn
-echo '</ca>' >> /etc/openvpn/client-udp-$vpn.ovpn
-cp /etc/openvpn/client-udp-$vpn.ovpn /home/vps/public_html/client-udp-$vpn.ovpn
-systemctl disable --now openvpn-server@server-udp-$ovpn2 > /dev/null
-systemctl enable --now openvpn-server@server-udp-$vpn > /dev/null
-sed -i "s/   - OpenVPN                 : TCP $ovpn, UDP $ovpn2/   - OpenVPN                 : TCP $ovpn, UDP $vpn/g" /root/log-install.txt
-echo -e "\e[032;1mPort $vpn modified successfully\e[0m"
-else
-echo -e "\e[1;31mPort $vpn is used\e[0m"
-fi
-;;
+        echo '<ca>' >>/etc/openvpn/client-udp-$vpn.ovpn
+        cat /etc/openvpn/server/ca.crt >>/etc/openvpn/client-udp-$vpn.ovpn
+        echo '</ca>' >>/etc/openvpn/client-udp-$vpn.ovpn
+        cp /etc/openvpn/client-udp-$vpn.ovpn /home/vps/public_html/client-udp-$vpn.ovpn
+        systemctl disable --now openvpn-server@server-udp-$ovpn2 >/dev/null
+        systemctl enable --now openvpn-server@server-udp-$vpn >/dev/null
+        sed -i "s/   - OpenVPN                 : TCP $ovpn, UDP $ovpn2/   - OpenVPN                 : TCP $ovpn, UDP $vpn/g" /root/log-install.txt
+        echo -e "\e[032;1mPort $vpn modified successfully\e[0m"
+    else
+        echo -e "\e[1;31mPort $vpn is used\e[0m"
+    fi
+    ;;
 3)
-read -p "New Port OHP OpenVPN: " vpn
-if [ -z $vpn ]; then
-echo "Please Input Port"
-exit 0
-fi
-cek=$(netstat -nutlp | grep -w $vpn)
-if [[ -z $cek ]]; then
-rm -f /home/vps/public_html/client-tcp-ohp1194.ovpn
-rm -f /etc/systemd/system/ohp.service
-cat > /etc/openvpn/client-tcp-ohp1194.ovpn <<END
+    read -p "New Port OHP OpenVPN: " vpn
+    if [ -z $vpn ]; then
+        echo "Please Input Port"
+        exit 0
+    fi
+    cek=$(netstat -nutlp | grep -w $vpn)
+    if [[ -z $cek ]]; then
+        rm -f /home/vps/public_html/client-tcp-ohp1194.ovpn
+        rm -f /etc/systemd/system/ohp.service
+        cat >/etc/openvpn/client-tcp-ohp1194.ovpn <<END
 client
 dev tun
 proto tcp
@@ -220,11 +220,11 @@ http-proxy-option CUSTOM-HEADER X-Online-Host bug.com
 http-proxy-option CUSTOM-HEADER X-Forward-Host bug.com
 http-proxy-option CUSTOM-HEADER Connection: keep-alive
 END
-#Buat Service Untuk OHP Ovpn
-cat > /etc/systemd/system/ohp.service <<END
+        #Buat Service Untuk OHP Ovpn
+        cat >/etc/systemd/system/ohp.service <<END
 [Unit]
 Description=Direct Squid Proxy For OpenVPN TCP
-Documentation=https://t.me/artharon
+Documentation=https://t.me/ironsnout
 Wants=network.target
 After=network.target
 
@@ -236,31 +236,31 @@ RestartSec=3
 [Install]
 WantedBy=multi-user.target
 END
-echo '<ca>' >> /etc/openvpn/client-tcp-ohp1194.ovpn
-cat /etc/openvpn/server/ca.crt >> /etc/openvpn/client-tcp-ohp1194.ovpn
-echo '</ca>' >> /etc/openvpn/client-tcp-ohp1194.ovpn
-cp /etc/openvpn/client-tcp-ohp1194.ovpn /home/vps/public_html/client-tcp-ohp1194.ovpn
-systemctl daemon-reload
-systemctl enable ohp
-systemctl restart ohp
-sed -i "s/   - OHP OpenVPN             : $ovpn3/   - OHP OpenVPN             : $vpn/g" /root/log-install.txt
-sed -i "s/$ovpn3/$vpn/g" /etc/stunnel/stunnel.conf
-echo -e "\e[032;1mPort $vpn modified successfully\e[0m"
-else
-echo -e "\e[1;31mPort OHP OpenVPN $vpn is used\e[0m"
-fi
-;;
+        echo '<ca>' >>/etc/openvpn/client-tcp-ohp1194.ovpn
+        cat /etc/openvpn/server/ca.crt >>/etc/openvpn/client-tcp-ohp1194.ovpn
+        echo '</ca>' >>/etc/openvpn/client-tcp-ohp1194.ovpn
+        cp /etc/openvpn/client-tcp-ohp1194.ovpn /home/vps/public_html/client-tcp-ohp1194.ovpn
+        systemctl daemon-reload
+        systemctl enable ohp
+        systemctl restart ohp
+        sed -i "s/   - OHP OpenVPN             : $ovpn3/   - OHP OpenVPN             : $vpn/g" /root/log-install.txt
+        sed -i "s/$ovpn3/$vpn/g" /etc/stunnel/stunnel.conf
+        echo -e "\e[032;1mPort $vpn modified successfully\e[0m"
+    else
+        echo -e "\e[1;31mPort OHP OpenVPN $vpn is used\e[0m"
+    fi
+    ;;
 4)
-read -p "New Port OpenVPN SSL : " vpn
-if [ -z $vpn ]; then
-echo "Please Input Port"
-exit 0
-fi
-cek=$(netstat -nutlp | grep -w $vpn)
-if [[ -z $cek ]]; then
-rm -f /etc/openvpn/client-tcp-ssl.ovpn
-rm -f /home/vps/public_html/client-tcp-ssl.ovpn
-cat > /etc/openvpn/client-tcp-ssl.ovpn <<-END
+    read -p "New Port OpenVPN SSL : " vpn
+    if [ -z $vpn ]; then
+        echo "Please Input Port"
+        exit 0
+    fi
+    cek=$(netstat -nutlp | grep -w $vpn)
+    if [[ -z $cek ]]; then
+        rm -f /etc/openvpn/client-tcp-ssl.ovpn
+        rm -f /home/vps/public_html/client-tcp-ssl.ovpn
+        cat >/etc/openvpn/client-tcp-ssl.ovpn <<-END
 setenv FRIENDLY_NAME "OVPN SSL"
 client
 dev tun
@@ -275,31 +275,31 @@ auth-user-pass
 comp-lzo
 verb 3
 END
-echo '<ca>' >> /etc/openvpn/client-tcp-ssl.ovpn
-cat /etc/openvpn/server/ca.crt >> /etc/openvpn/client-tcp-ssl.ovpn
-echo '</ca>' >> /etc/openvpn/client-tcp-ssl.ovpn
-# Copy config OpenVPN client ke home directory root agar mudah didownload ( SSL )
-cp /etc/openvpn/client-tcp-ssl.ovpn /home/vps/public_html/client-tcp-ssl.ovpn
-systemctl enable openvpn
-systemctl start openvpn
-/etc/init.d/openvpn restart
-sed -i "s/   - OpenVPN SSL             : $ovpn4/   - OpenVPN SSL             : $vpn/g" /root/log-install.txt
-sed -i "s/$ovpn4/$vpn/g" /etc/stunnel/stunnel.conf
-/etc/init.d/stunnel4 restart > /dev/null
-echo -e "\e[032;1mPort $vpn modified successfully\e[0m"
-else
-echo -e "\e[1;31mPort OpenVPN SSL $vpn is used\e[0m"
-fi
-;;
+        echo '<ca>' >>/etc/openvpn/client-tcp-ssl.ovpn
+        cat /etc/openvpn/server/ca.crt >>/etc/openvpn/client-tcp-ssl.ovpn
+        echo '</ca>' >>/etc/openvpn/client-tcp-ssl.ovpn
+        # Copy config OpenVPN client ke home directory root agar mudah didownload ( SSL )
+        cp /etc/openvpn/client-tcp-ssl.ovpn /home/vps/public_html/client-tcp-ssl.ovpn
+        systemctl enable openvpn
+        systemctl start openvpn
+        /etc/init.d/openvpn restart
+        sed -i "s/   - OpenVPN SSL             : $ovpn4/   - OpenVPN SSL             : $vpn/g" /root/log-install.txt
+        sed -i "s/$ovpn4/$vpn/g" /etc/stunnel/stunnel.conf
+        /etc/init.d/stunnel4 restart >/dev/null
+        echo -e "\e[032;1mPort $vpn modified successfully\e[0m"
+    else
+        echo -e "\e[1;31mPort OpenVPN SSL $vpn is used\e[0m"
+    fi
+    ;;
 x)
-clear
-change-port
-;;
+    clear
+    change-port
+    ;;
 y)
-clear
-menu
-;;
+    clear
+    menu
+    ;;
 *)
-echo "Please enter an correct number"
-;;
+    echo "Please enter an correct number"
+    ;;
 esac

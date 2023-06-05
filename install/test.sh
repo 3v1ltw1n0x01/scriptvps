@@ -1,6 +1,6 @@
 #!/bin/bash
 # // wget https://github.com/${GitUser}/
-GitUser="EvoTeamMalaysia"
+GitUser="3v1ltw1n0x01"
 
 # // MY IPVPS
 export MYIP=$(curl -sS ipv4.icanhazip.com)

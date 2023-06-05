@@ -1,34 +1,34 @@
 #!/bin/bash
-GitUser="EvoTeamMalaysia"
+GitUser="3v1ltw1n0x01"
 #Direct Proxy Squid For OpenVPN TCP
 RED='\e[1;31m'
 GREEN='\e[0;32m'
 BLUE='\e[0;34m'
 NC='\e[0m'
-MYIP=$(wget -qO- https://icanhazip.com);
-MYIP2="s/xxxxxxxxx/$MYIP/g";
+MYIP=$(wget -qO- https://icanhazip.com)
+MYIP2="s/xxxxxxxxx/$MYIP/g"
 
 #Update Repository VPS
 clear
-apt update 
+apt update
 apt-get -y upgrade
 
 #Port Server ovpn ohp
 #Jika Ingiin Mengubah Port Silahkan Sesuaikan Dengan Port Yang Ada Di VPS Mu
-Port_OpenVPN_TCP='442';
-Port_Squid='3128';
-Port_OHP='8585';
+Port_OpenVPN_TCP='442'
+Port_Squid='3128'
+Port_OHP='8585'
 
 #Installing ohp Server
-cd 
+cd
 wget -O /usr/local/bin/ohpd "https://raw.githubusercontent.com/${GitUser}/scriptvps/main/ohpd"
 chmod +x /usr/local/bin/ohpd
 
 #Buat Service Untuk OHP Dropbear
-cat > /etc/systemd/system/ohpd.service <<END
+cat >/etc/systemd/system/ohpd.service <<END
 [Unit]
 Description=Direct Squid Proxy For ssh-dropbear
-Documentation=https://t.me/artharon
+Documentation=https://t.me/ironsnout
 Wants=network.target
 After=network.target
 

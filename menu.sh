@@ -1,6 +1,6 @@
 #!/bin/bash
 
-GitUser="EvoTeamMalaysia"
+GitUser="3v1ltw1n0x01"
 #IZIN SCRIPT
 MYIP=$(curl -sS ipv4.icanhazip.com)
 clear
@@ -171,7 +171,7 @@ echo -e ""
 echo -e "  \e[$below[Ctrl + C] For exit from main menu\e[m"
 echo -e " \e[$line╒════════════════════════════════════════════════════════════╕\e[m"
 echo -e "  \e[$below Version Name         : $Info1"
-echo -e "  \e[$below Autoscript By        : ARTHARON"
+echo -e "  \e[$below Autoscript By        : ironsnout"
 echo -e "  \e[$below Certificate Status   : Expired in $certifacate days"
 echo -e "  \e[$below Client Name          : $username"
 echo -e " \e[$line╘════════════════════════════════════════════════════════════╛\e[m"

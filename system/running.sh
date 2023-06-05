@@ -4,7 +4,7 @@ export green="\e[0;32m"
 export NC="\e[0m"
 
 # // GIT USER
-export GitUser="EvoTeamMalaysia"
+export GitUser="3v1ltw1n0x01"
 export MYIP=$(wget -qO- icanhazip.com);
 
 # // VPS INFO

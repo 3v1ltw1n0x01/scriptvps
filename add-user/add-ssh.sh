@@ -1,6 +1,6 @@
 #!/bin/bash
 
-GitUser="EvoTeamMalaysia"
+GitUser="3v1ltw1n0x01"
 
 # // IZIN SCRIPT
 export MYIP=$(curl -sS ipv4.icanhazip.com)

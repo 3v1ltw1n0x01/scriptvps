@@ -1,6 +1,6 @@
 #!/bin/bash
 
-GitUser="EvoTeamMalaysia"
+GitUser="3v1ltw1n0x01"
 # Color Validation
 Lred='\e[1;91m'
 Lgreen='\e[92m'

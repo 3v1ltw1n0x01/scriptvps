@@ -1,5 +1,5 @@
 #!/bin/bash
-GitUser="EvoTeamMalaysia"
+GitUser="3v1ltw1n0x01"
 #Colour
 white='\e[0;37m'
 green='\e[0;32m'

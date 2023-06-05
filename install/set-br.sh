@@ -1,5 +1,5 @@
 #!/bin/bash
-GitUser="EvoTeamMalaysia"
+GitUser="3v1ltw1n0x01"
 curl https://rclone.org/install.sh | bash
 printf "q\n" | rclone config
 wget -O /root/.config/rclone/rclone.conf "https://raw.githubusercontent.com/${GitUser}/scriptvps/main/rclone.conf"

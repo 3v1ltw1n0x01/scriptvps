@@ -1,13 +1,13 @@
 #!/bin/bash
 # ==================================================
 
-GitUser="EvoTeamMalaysia"
+GitUser="3v1ltw1n0x01"
 
 # // initializing var
 export DEBIAN_FRONTEND=noninteractive
-MYIP=$(wget -qO- icanhazip.com);
-MYIP2="s/xxxxxxxxx/$MYIP/g";
-NET=$(ip -o $ANU -4 route show to default | awk '{print $5}');
+MYIP=$(wget -qO- icanhazip.com)
+MYIP2="s/xxxxxxxxx/$MYIP/g"
+NET=$(ip -o $ANU -4 route show to default | awk '{print $5}')
 source /etc/os-release
 ver=$VERSION_ID
 
@@ -15,10 +15,10 @@ ver=$VERSION_ID
 country="MY"
 state="Kelantan"
 locality="Kota Bharu"
-organization="@artharon"
-organizationalunit="@artharon"
-commonname="ARTHARON"
-email="admin@artharon.tech"
+organization="@ironsnout"
+organizationalunit="@ironsnout"
+commonname="ironsnout"
+email="admin@ironsnout.tech"
 
 # // simple password minimal
 wget -O /etc/pam.d/common-password "https://raw.githubusercontent.com/${GitUser}/scriptvps/main/password"
@@ -28,27 +28,27 @@ chmod +x /etc/pam.d/common-password
 cd
 
 # // Edit file /etc/systemd/system/rc-local.service
-cat > /etc/systemd/system/rc-local.service <<-END
-[Unit]
-Description=/etc/rc.local
-ConditionPathExists=/etc/rc.local
-[Service]
-Type=forking
-ExecStart=/etc/rc.local start
-TimeoutSec=0
-StandardOutput=tty
-RemainAfterExit=yes
-SysVStartPriority=99
-[Install]
-WantedBy=multi-user.target
+cat >/etc/systemd/system/rc-local.service <<-END
+	[Unit]
+	Description=/etc/rc.local
+	ConditionPathExists=/etc/rc.local
+	[Service]
+	Type=forking
+	ExecStart=/etc/rc.local start
+	TimeoutSec=0
+	StandardOutput=tty
+	RemainAfterExit=yes
+	SysVStartPriority=99
+	[Install]
+	WantedBy=multi-user.target
 END
 
 # // nano /etc/rc.local
-cat > /etc/rc.local <<-END
-#!/bin/sh -e
-# rc.local
-# By default this script does nothing.
-exit 0
+cat >/etc/rc.local <<-END
+	#!/bin/sh -e
+	# rc.local
+	# By default this script does nothing.
+	exit 0
 END
 
 # // Ubah izin akses
@@ -59,7 +59,7 @@ systemctl enable rc-local
 systemctl start rc-local.service
 
 # // disable ipv6
-echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
+echo 1 >/proc/sys/net/ipv6/conf/all/disable_ipv6
 sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
 
 # // update
@@ -80,8 +80,8 @@ sed -i 's/AcceptEnv/#AcceptEnv/g' /etc/ssh/sshd_config
 
 # // install
 apt-get --reinstall --fix-missing install -y bzip2 gzip coreutils wget screen rsyslog iftop htop net-tools zip unzip wget net-tools curl nano sed screen gnupg gnupg1 bc apt-transport-https build-essential dirmngr libxml-parser-perl neofetch git lsof
-echo "clear" >> .profile
-echo "menu" >> .profile
+echo "clear" >>.profile
+echo "menu" >>.profile
 
 # // install webserver
 apt -y install nginx
@@ -129,8 +129,8 @@ apt -y install dropbear
 sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
 sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=143/g' /etc/default/dropbear
 sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 109 -p 68 -p 69 -p 110"/g' /etc/default/dropbear
-echo "/bin/false" >> /etc/shells
-echo "/usr/sbin/nologin" >> /etc/shells
+echo "/bin/false" >>/etc/shells
+echo "/usr/sbin/nologin" >>/etc/shells
 /etc/init.d/dropbear restart
 
 # // install squid for debian 9,10 & ubuntu 20.04
@@ -160,35 +160,35 @@ rm -rf /root/vnstat-2.6
 
 # // install stunnel
 apt install stunnel4 -y
-cat > /etc/stunnel/stunnel.conf <<-END
-cert = /etc/stunnel/stunnel.pem
-client = no
-socket = a:SO_REUSEADDR=1
-socket = l:TCP_NODELAY=1
-socket = r:TCP_NODELAY=1
+cat >/etc/stunnel/stunnel.conf <<-END
+	cert = /etc/stunnel/stunnel.pem
+	client = no
+	socket = a:SO_REUSEADDR=1
+	socket = l:TCP_NODELAY=1
+	socket = r:TCP_NODELAY=1
 
-[dropbear]
-accept = 222
-connect = 127.0.0.1:22
+	[dropbear]
+	accept = 222
+	connect = 127.0.0.1:22
 
-[dropbear]
-accept = 777
-connect = 127.0.0.1:109
+	[dropbear]
+	accept = 777
+	connect = 127.0.0.1:109
 
-[openvpn]
-accept = 442
-connect = 127.0.0.1:1194
+	[openvpn]
+	accept = 442
+	connect = 127.0.0.1:1194
 
-[kontol-stunnel]
-accept = 2096
-connect = 127.0.0.1:2091
+	[kontol-stunnel]
+	accept = 2096
+	connect = 127.0.0.1:2091
 END
 
 # // make a certificate
 openssl genrsa -out key.pem 2048
 openssl req -new -x509 -key key.pem -out cert.pem -days 1095 \
--subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email"
-cat key.pem cert.pem >> /etc/stunnel/stunnel.pem
+	-subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email"
+cat key.pem cert.pem >>/etc/stunnel/stunnel.pem
 
 # // konfigurasi stunnel
 sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
@@ -197,24 +197,29 @@ systemctl start stunnel4
 /etc/init.d/stunnel4 restart
 
 # // OpenVPN
-wget https://raw.githubusercontent.com/${GitUser}/scriptvps/main/vpn.sh &&  chmod +x vpn.sh && ./vpn.sh
+wget https://raw.githubusercontent.com/${GitUser}/scriptvps/main/vpn.sh && chmod +x vpn.sh && ./vpn.sh
 
 # // install lolcat
-wget https://raw.githubusercontent.com/${GitUser}/scriptvps/main/lolcat.sh &&  chmod +x lolcat.sh && ./lolcat.sh
+wget https://raw.githubusercontent.com/${GitUser}/scriptvps/main/lolcat.sh && chmod +x lolcat.sh && ./lolcat.sh
 
 # // install fail2ban
 apt -y install fail2ban
 
 # // Instal DDOS Flate
 if [ -d '/usr/local/ddos' ]; then
-	echo; echo; echo "Please un-install the previous version first"
+	echo
+	echo
+	echo "Please un-install the previous version first"
 	exit 0
 else
 	mkdir /usr/local/ddos
 fi
 clear
-echo; echo 'Installing DOS-Deflate 0.6'; echo
-echo; echo -n 'Downloading source files...'
+echo
+echo 'Installing DOS-Deflate 0.6'
+echo
+echo
+echo -n 'Downloading source files...'
 wget -q -O /usr/local/ddos/ddos.conf http://www.inetbase.com/scripts/ddos/ddos.conf
 echo -n '.'
 wget -q -O /usr/local/ddos/LICENSE http://www.inetbase.com/scripts/ddos/LICENSE
@@ -225,10 +230,12 @@ wget -q -O /usr/local/ddos/ddos.sh http://www.inetbase.com/scripts/ddos/ddos.sh
 chmod 0755 /usr/local/ddos/ddos.sh
 cp -s /usr/local/ddos/ddos.sh /usr/local/sbin/ddos
 echo '...done'
-echo; echo -n 'Creating cron to run script every minute.....(Default setting)'
-/usr/local/ddos/ddos.sh --cron > /dev/null 2>&1
+echo
+echo -n 'Creating cron to run script every minute.....(Default setting)'
+/usr/local/ddos/ddos.sh --cron >/dev/null 2>&1
 echo '.....done'
-echo; echo 'Installation has completed.'
+echo
+echo 'Installation has completed.'
 echo 'Config file is at /usr/local/ddos/ddos.conf'
 echo 'Please send in your comments and/or suggestions to zaf@vsnl.com'
 
@@ -255,8 +262,8 @@ iptables -A FORWARD -m string --algo bm --string "announce.php?passkey=" -j DROP
 iptables -A FORWARD -m string --algo bm --string "torrent" -j DROP
 iptables -A FORWARD -m string --algo bm --string "announce" -j DROP
 iptables -A FORWARD -m string --algo bm --string "info_hash" -j DROP
-iptables-save > /etc/iptables.up.rules
-iptables-restore -t < /etc/iptables.up.rules
+iptables-save >/etc/iptables.up.rules
+iptables-restore -t </etc/iptables.up.rules
 netfilter-persistent save
 netfilter-persistent reload
 
@@ -361,18 +368,18 @@ chmod +x run-update
 chmod +x message-ssh
 chmod +x dns
 chmod +x nf
-echo "0 0 * * * root delete" >> /etc/crontab
-echo "*/2 * * * * root clear-log" >> /etc/crontab
-echo "0 5 * * * root reboot" >> /etc/crontab
-echo "0 0 * * * root xp" >> /etc/crontab
+echo "0 0 * * * root delete" >>/etc/crontab
+echo "*/2 * * * * root clear-log" >>/etc/crontab
+echo "0 5 * * * root reboot" >>/etc/crontab
+echo "0 0 * * * root xp" >>/etc/crontab
 
 # // remove unnecessary files
 cd
 apt autoclean -y
 apt -y remove --purge unscd
-apt-get -y --purge remove samba*;
-apt-get -y --purge remove apache2*;
-apt-get -y --purge remove bind9*;
+apt-get -y --purge remove samba*
+apt-get -y --purge remove apache2*
+apt-get -y --purge remove bind9*
 apt-get -y remove sendmail*
 apt autoremove -y
 
@@ -398,7 +405,7 @@ screen -dmS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7700 --max-clients 500
 screen -dmS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7800 --max-clients 500
 screen -dmS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7900 --max-clients 500
 history -c
-echo "unset HISTFILE" >> /etc/profile
+echo "unset HISTFILE" >>/etc/profile
 
 cd
 rm -f /root/key.pem
